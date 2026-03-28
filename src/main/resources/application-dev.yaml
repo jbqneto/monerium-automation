@@ -1,0 +1,27 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    root: INFO
+    com.jbqneto.moneriumdca: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+
+app:
+  monerium:
+    environment: sandbox
+    base-url: https://api.monerium.dev
+    web-url: https://sandbox.monerium.dev
+
+management:
+  endpoint:
+    health:
+      show-details: always
