@@ -54,6 +54,7 @@ app:
     client-credentials-client-id: ${MONERIUM_CLIENT_CREDENTIALS_CLIENT_ID:${MONERIUM_CLIENT_ID:}}
     client-secret: ${MONERIUM_CLIENT_SECRET:}
     webhook-secret: ${MONERIUM_WEBHOOK_SECRET:}
+    webhook-url: ${MONERIUM_WEBHOOK_URL:}
     redirect-uri: ${MONERIUM_REDIRECT_URI:http://localhost:8080/api/monerium/oauth/callback}
     default-chain: ${MONERIUM_DEFAULT_CHAIN:base}
     default-wallet-address: ${MONERIUM_DEFAULT_WALLET_ADDRESS:}
@@ -66,6 +67,13 @@ app:
     api-key: ${EXECUTOR_API_KEY:local-dev-key}
     connect-timeout-seconds: ${EXECUTOR_CONNECT_TIMEOUT_SECONDS:5}
     read-timeout-seconds: ${EXECUTOR_READ_TIMEOUT_SECONDS:60}
+
+  telegram:
+    enabled: ${TELEGRAM_ENABLED:false}
+    bot-token: ${TELEGRAM_BOT_TOKEN:}
+    chat-id: ${TELEGRAM_CHAT_ID:}
+    connect-timeout-seconds: ${TELEGRAM_CONNECT_TIMEOUT_SECONDS:5}
+    read-timeout-seconds: ${TELEGRAM_READ_TIMEOUT_SECONDS:10}
 
   dca:
     single-tranche-limit: ${DCA_SINGLE_TRANCHE_LIMIT:150}

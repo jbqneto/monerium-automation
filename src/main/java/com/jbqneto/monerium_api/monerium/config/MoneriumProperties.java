@@ -11,6 +11,7 @@ public record MoneriumProperties(
     String clientCredentialsClientId,
     String clientSecret,
     String webhookSecret,
+    String webhookUrl,
     String redirectUri,
     String defaultChain,
     String defaultWalletAddress,

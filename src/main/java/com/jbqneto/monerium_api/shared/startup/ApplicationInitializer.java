@@ -1,10 +1,11 @@
 package com.jbqneto.monerium_api.shared.startup;
 
-import com.jbqneto.monerium_api.monerium.dto.response.MoneriumAuthContextResponse;
-import com.jbqneto.monerium_api.monerium.dto.response.MoneriumTokenResponse;
-import com.jbqneto.monerium_api.monerium.service.MoneriumAuthenticationService;
+import com.jbqneto.monerium_api.monerium.config.MoneriumProperties;
+import com.jbqneto.monerium_api.monerium.service.MoneriumObserverService;
+import com.jbqneto.monerium_api.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -14,17 +15,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationInitializer implements ApplicationRunner {
 
-    private final MoneriumAuthenticationService authenticationService;
+    private final MoneriumObserverService observerService;
+    private final NotificationService notificationService;
+    private final MoneriumProperties moneriumProperties;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        log.info("Initializing Monerium client credentials token...");
-        MoneriumTokenResponse token = authenticationService.getClientCredentialsToken();
-        MoneriumAuthContextResponse context = authenticationService.getAuthContext(token.accessToken());
+        if (!StringUtils.hasText(moneriumProperties.clientSecret())
+            || !StringUtils.hasText(moneriumProperties.clientCredentialsClientId())) {
+            log.info("Skipping Monerium startup bootstrap because client credentials are not configured.");
+            return;
+        }
 
-        log.info("Monerium authenticated user loaded successfully.");
-        log.info("User Id: {}", context.userId());
-        log.info("Default profile: {}", context.defaultProfile());
-        log.info("Profiles count: {}", context.profiles() != null ? context.profiles().size() : 0);
+        var authContext = observerService.getInitialDataAndWatch(moneriumProperties);
+
+        notificationService.sendPersonalUpdate("""
+            Monerium API started successfully.
+            User Id: %s
+            Default profile: %s
+            Profiles count: %d
+            """.formatted(
+            authContext.context().userId(),
+            authContext.context().defaultProfile(),
+            authContext.context().profiles() != null ? authContext.context().profiles().size() : 0
+        ).trim());
     }
 }
