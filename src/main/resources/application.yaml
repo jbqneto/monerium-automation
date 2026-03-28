@@ -1,14 +1,12 @@
 spring:
   application:
     name: monerium-api
+  mvc:
+    servlet:
+      path: /api
 
   profiles:
     default: dev
-
-  jackson:
-    serialization:
-      write-dates-as-timestamps: false
-    default-property-inclusion: non_null
 
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/monerium_dca}
@@ -50,7 +48,7 @@ logging:
 app:
   monerium:
     environment: ${MONERIUM_ENVIRONMENT:sandbox}
-    base-url: ${MONERIUM_BASE_URL:https://api.monerium.dev}
+    api-url: ${MONERIUM_BASE_URL:https://api.monerium.dev}
     web-url: ${MONERIUM_WEB_URL:https://sandbox.monerium.dev}
     authorization-client-id: ${MONERIUM_AUTHORIZATION_CLIENT_ID:${MONERIUM_CLIENT_ID:}}
     client-credentials-client-id: ${MONERIUM_CLIENT_CREDENTIALS_CLIENT_ID:${MONERIUM_CLIENT_ID:}}

@@ -18,7 +18,7 @@ logging:
 app:
   monerium:
     environment: sandbox
-    base-url: https://api.monerium.dev
+    api-url: https://api.monerium.dev
     web-url: https://sandbox.monerium.dev
 
 management:
